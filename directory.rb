@@ -13,7 +13,8 @@ def input_students(students = [])
     cohort = gets.chomp
   end
   students << {name: name, cohort: cohort.to_sym} if name != tbc || cohort != tbc
-  puts "Now we have #{students.count} students"
+  puts "Now we have #{students.count} students" if students.count > 1
+  puts "Now we have #{students.count} student" if students.count < 2
   input_students(students) unless name == tbc && cohort == tbc
   students
 end
@@ -34,7 +35,8 @@ def print(students)
 end
 
 def print_footer(names)
-puts "Overall, we have #{names.count} great students"
+puts "Overall, we have #{names.count} great students" if names.count > 1
+puts "Overall, we have #{names.count} great student" if names.count < 2
 end
 
 students = input_students
