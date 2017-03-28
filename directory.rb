@@ -1,13 +1,18 @@
-def input_students
-  puts "Please enter the names of the students"
+def input_students(students = [])
+  puts "Please enter the name of the student"
   puts "To finish, just hit return twice"
-  students = []
   name = gets.chomp
-  while !name.empty? do
-    students << {name: name, cohort: :november, country: "the UK", hobbies: "code, dance and travel", height: "185 cm"}
-    puts "Now we have #{students.count} students"
-    name = gets.chomp
+  puts "Please enter the student's cohort"
+  cohort = gets.chomp
+  cohort = "april" if cohort.empty?
+  months = %w(january february march april may june july august september october november december)
+  while !months.include? cohort
+    puts "You misspelled the cohort, please type it again"
+    cohort = gets.chomp
   end
+  students << {name: name, cohort: cohort.to_sym} if !name.empty?
+  puts "Now we have #{students.count} students"
+  input_students(students) if !name.empty?
   students
 end
 
