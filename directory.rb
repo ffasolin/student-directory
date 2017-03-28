@@ -13,33 +13,33 @@ def input_students(students = [])
     cohort = gets.chop
   end
   students << {name: name, cohort: cohort.to_sym} if name != tbc || cohort != tbc
-  puts "Now we have #{students.count} students" if students.count > 1
-  puts "Now we have #{students.count} student" if students.count < 2
+  puts "Now we have #{students.count} students" if students.count != 1
+  puts "Now we have #{students.count} student" if students.count == 1
   input_students(students) unless name == tbc && cohort == tbc
   students
 end
 
-def print_header
-puts "The students of Villains Academy"
-puts "--------------"
-end
-
 def print(students)
-  hash_co = students.group_by { |entry| entry[:cohort] }
-  hash_co.each do |key, value|
-    puts "#{key.capitalize} cohort"
-    for i in 0..value.length-1 do
-    puts "#{i+1}. #{value[i][:name]}"
-  end
+  if students.count > 0
+    puts "The students of Villains Academy"
+    puts "--------------"
+    hash_co = students.group_by { |entry| entry[:cohort] }
+    hash_co.each do |key, value|
+      puts "#{key.capitalize} cohort"
+      for i in 0..value.length-1 do
+        puts "#{i+1}. #{value[i][:name]}"
+      end
+    end
   end
 end
 
 def print_footer(names)
-puts "Overall, we have #{names.count} great students" if names.count > 1
-puts "Overall, we have #{names.count} great student" if names.count < 2
+  if names.count > 0
+    puts "Overall, we have #{names.count} great students" if names.count != 1
+    puts "Overall, we have #{names.count} great student" if names.count == 1
+  end
 end
 
 students = input_students
-print_header
 print(students)
 print_footer(students)
