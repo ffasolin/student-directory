@@ -19,8 +19,9 @@ end
 def print(students)
   d = 0
   while d < students.count
-      puts "#{d+1}. #{students[d][:name]} (#{students[d][:cohort]} cohort) - likes to #{students[d][:hobbies]}, was born in #{students[d][:country]} and is #{students[d][:height]} high"
-      d += 1
+    str = "#{d+1}. #{students[d][:name]} (#{students[d][:cohort]} cohort)"
+    puts str.center(str.length + 15)
+    d += 1
   end
 end
 
