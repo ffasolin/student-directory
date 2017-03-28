@@ -2,15 +2,15 @@ def input_students(students = [])
   puts "Please enter the name of the student"
   puts "To finish, just hit return twice"
   tbc = "TBC"
-  name = gets.chomp
+  name = gets.chop
   name = tbc if name.empty?
   puts "Please enter the student's cohort"
-  cohort = gets.chomp
+  cohort = gets.chop
   cohort = tbc if cohort.empty?
   months = %w(january february march april may june july august september october november december tbc)
   while !months.include? cohort.downcase
     puts "You misspelled the cohort, please type it again"
-    cohort = gets.chomp
+    cohort = gets.chop
   end
   students << {name: name, cohort: cohort.to_sym} if name != tbc || cohort != tbc
   puts "Now we have #{students.count} students" if students.count > 1
@@ -27,7 +27,7 @@ end
 def print(students)
   hash_co = students.group_by { |entry| entry[:cohort] }
   hash_co.each do |key, value|
-    puts key.capitalize
+    puts "#{key.capitalize} cohort"
     for i in 0..value.length-1 do
     puts "#{i+1}. #{value[i][:name]}"
   end
