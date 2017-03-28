@@ -17,10 +17,10 @@ puts "--------------"
 end
 
 def print(students)
-  students.each_with_index do |student, i|
-    if student[:name].length < 12
-      puts "#{i+1}. #{student[:name]} (#{student[:cohort]} cohort)"
-    end
+  d = 0
+  while d < students.count
+      puts "#{d+1}. #{students[d][:name]} (#{students[d][:cohort]} cohort)"
+      d += 1
   end
 end
 
