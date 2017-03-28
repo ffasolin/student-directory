@@ -4,7 +4,7 @@ def input_students
   students = []
   name = gets.chomp
   while !name.empty? do
-    students << {name: name, cohort: :november}
+    students << {name: name, cohort: :november, country: "the UK", hobbies: "code, dance and travel", height: "185 cm"}
     puts "Now we have #{students.count} students"
     name = gets.chomp
   end
@@ -19,7 +19,7 @@ end
 def print(students)
   d = 0
   while d < students.count
-      puts "#{d+1}. #{students[d][:name]} (#{students[d][:cohort]} cohort)"
+      puts "#{d+1}. #{students[d][:name]} (#{students[d][:cohort]} cohort) - likes to #{students[d][:hobbies]}, was born in #{students[d][:country]} and is #{students[d][:height]} high"
       d += 1
   end
 end
