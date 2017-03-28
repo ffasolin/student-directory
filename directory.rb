@@ -1,18 +1,20 @@
 def input_students(students = [])
   puts "Please enter the name of the student"
   puts "To finish, just hit return twice"
+  tbc = "TBC"
   name = gets.chomp
+  name = tbc if name.empty?
   puts "Please enter the student's cohort"
   cohort = gets.chomp
-  cohort = "april" if cohort.empty?
-  months = %w(january february march april may june july august september october november december)
-  while !months.include? cohort
+  cohort = tbc if cohort.empty?
+  months = %w(january february march april may june july august september october november december tbc)
+  while !months.include? cohort.downcase
     puts "You misspelled the cohort, please type it again"
     cohort = gets.chomp
   end
-  students << {name: name, cohort: cohort.to_sym} if !name.empty?
+  students << {name: name, cohort: cohort.to_sym} if name != tbc || cohort != tbc
   puts "Now we have #{students.count} students"
-  input_students(students) if !name.empty?
+  input_students(students) unless name == tbc && cohort == tbc
   students
 end
 
