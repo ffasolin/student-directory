@@ -18,7 +18,7 @@ end
 
 def print(students)
   students.each_with_index do |student, i|
-    if student[:name].split("").first.downcase == "f"
+    if student[:name].length < 12
       puts "#{i+1}. #{student[:name]} (#{student[:cohort]} cohort)"
     end
   end
