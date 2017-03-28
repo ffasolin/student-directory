@@ -24,11 +24,12 @@ puts "--------------"
 end
 
 def print(students)
-  d = 0
-  while d < students.count
-    str = "#{d+1}. #{students[d][:name]} (#{students[d][:cohort]} cohort)"
-    puts str.center(str.length + 15)
-    d += 1
+  hash_co = students.group_by { |entry| entry[:cohort] }
+  hash_co.each do |key, value|
+    puts key.capitalize
+    for i in 0..value.length-1 do
+    puts "#{i+1}. #{value[i][:name]}"
+  end
   end
 end
 
