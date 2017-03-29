@@ -8,13 +8,25 @@ def print_menu
   puts "9. Exit"
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
     @students << {name: name, cohort: cohort.to_sym}
   end
   file.close
+end
+
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
 end
 
 def show_students
@@ -42,7 +54,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -60,15 +72,15 @@ def input_students(students = [])
   puts "Please enter the name of the student"
   puts "To finish, just hit return twice"
   tbc = "TBC"
-  name = gets.chop
+  name = STDIN.gets.chop
   name = tbc if name.empty?
   puts "Please enter the student's cohort"
-  cohort = gets.chop
+  cohort = STDIN.gets.chop
   cohort = tbc if cohort.empty?
   months = %w(january february march april may june july august september october november december tbc)
   while !months.include? cohort.downcase
     puts "You misspelled the cohort, please type it again"
-    cohort = gets.chop
+    cohort = STDIN.gets.chop
   end
   @students << {name: name, cohort: cohort.to_sym} if name != tbc || cohort != tbc
   puts "Now we have #{students.count} students" if @students.count != 1
@@ -97,6 +109,5 @@ def print_footer
   end
 end
 
+try_load_students
 interactive_menu
-print(@students)
-print_footer(@students)
