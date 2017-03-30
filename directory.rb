@@ -26,10 +26,11 @@ def load_students(filename = "students.csv")
     add_to_students_array(name, cohort)
   end
   file.close
+  puts "List loaded successfuly."
 end
 
 def load_students_at_launch
-  filename = "students.csv"
+  filename = ARGV.first
   return if filename.nil?
   if File.exist?(filename)
     load_students(filename)
@@ -41,6 +42,7 @@ def load_students_at_launch
 end
 
 def show_students
+  return puts "There are no students saved to the list yet." if @students.count == 0
   print_students_list
   print_footer
 end
@@ -69,6 +71,8 @@ def save_students
     file.puts csv_line
   end
   file.close
+  return puts "List saved successfuly." if @students.count > 0
+  puts "The list is empty - nothing to be saved."
 end
 
 def input_students(students = [])
