@@ -5,8 +5,8 @@
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to file"
+  puts "4. Load the list from previously saved file"
   puts "9. Exit"
 end
 
@@ -19,8 +19,10 @@ def student_s
   "students"
 end
 
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
+def load_students
+  puts "Please type file name:"
+  file_name = gets.chomp
+  file = File.open(file_name, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
     add_to_students_array(name, cohort)
@@ -33,7 +35,7 @@ def load_students_at_launch
   filename = ARGV.first
   return if filename.nil?
   if File.exist?(filename)
-    load_students(filename)
+    load_students
     puts "Loaded #{@students.count} from #{filename}"
   else
     puts "Sorry, #{filename} doesn't exist."
@@ -64,7 +66,9 @@ def interactive_menu
 end
 
 def save_students
-  file = File.open("students.csv", "w")
+  puts "Please type file name:"
+  file_name = gets.chomp
+  file = File.open(file_name, "w")
   @students.each do |student|
     student_data = [student[@name], student[@cohort]]
     csv_line = student_data.join(",")
