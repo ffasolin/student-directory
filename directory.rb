@@ -19,15 +19,20 @@ def student_s
   "students"
 end
 
+require 'csv'
+
+def open_file(file_name)
+  CSV.open(file_name, "r") do |newfile|
+    newfile.readlines.each do |line|
+      add_to_students_array(name=line[0], cohort=line[1])
+    end
+  end
+end
+
 def load_students
   puts "Please type file name:"
   file_name = gets.chomp
-  File.open(file_name, "r") do |newfile|
-    newfile.readlines.each do |line|
-      name, cohort = line.chomp.split(",")
-      add_to_students_array(name, cohort)
-    end
-  end
+  open_file(file_name)
   puts "List loaded successfuly."
 end
 
@@ -35,7 +40,7 @@ def load_students_at_launch
   filename = ARGV.first
   return if filename.nil?
   if File.exist?(filename)
-    load_students
+    open_file(filename)
     puts "Loaded #{@students.count} from #{filename}"
   else
     puts "Sorry, #{filename} doesn't exist."
@@ -68,11 +73,10 @@ end
 def save_students
   puts "Please type file name:"
   file_name = gets.chomp
-  File.open(file_name, "w") do |newfile|
+  CSV.open(file_name, "w") do |newfile|
     @students.each do |student|
       student_data = [student[@name], student[@cohort]]
-      csv_line = student_data.join(",")
-      newfile.puts csv_line
+      newfile.puts student_data
     end
   end
   return puts "List saved successfuly." if @students.count > 0
