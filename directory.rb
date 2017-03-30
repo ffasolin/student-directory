@@ -22,12 +22,12 @@ end
 def load_students
   puts "Please type file name:"
   file_name = gets.chomp
-  file = File.open(file_name, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(",")
-    add_to_students_array(name, cohort)
+  File.open(file_name, "r") do |newfile|
+    newfile.readlines.each do |line|
+      name, cohort = line.chomp.split(",")
+      add_to_students_array(name, cohort)
+    end
   end
-  file.close
   puts "List loaded successfuly."
 end
 
@@ -68,13 +68,13 @@ end
 def save_students
   puts "Please type file name:"
   file_name = gets.chomp
-  file = File.open(file_name, "w")
-  @students.each do |student|
-    student_data = [student[@name], student[@cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  File.open(file_name, "w") do |newfile|
+    @students.each do |student|
+      student_data = [student[@name], student[@cohort]]
+      csv_line = student_data.join(",")
+      newfile.puts csv_line
+    end
   end
-  file.close
   return puts "List saved successfuly." if @students.count > 0
   puts "The list is empty - nothing to be saved."
 end
