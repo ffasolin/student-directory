@@ -28,7 +28,7 @@ def load_students(filename = "students.csv")
   file.close
 end
 
-def try_load_students
+def load_students_at_launch
   filename = "students.csv"
   return if filename.nil?
   if File.exist?(filename)
@@ -46,20 +46,12 @@ def show_students
 end
 
 def process(selection)
-  case selection
-  when "1"
-    input_students
-  when "2"
-    show_students
-  when "3"
-    save_students
-  when "4"
-    load_students
-  when "9"
-    exit
-  else
-    puts "I don't know what you meant. Try again."
-  end
+  return input_students if selection == "1"
+  return show_students if selection == "2"
+  return save_students if selection == "3"
+  return load_students if selection == "4"
+  return exit if selection == "9"
+  puts "I don't know what you meant. Try again."
 end
 
 def interactive_menu
@@ -98,10 +90,14 @@ def input_students(students = [])
   input_students(@students) unless name == tbc && cohort == tbc
 end
 
+def print_header
+  puts "The students of Villains Academy"
+  puts "--------------"
+end
+
 def print_students_list
   if @students.count > 0
-    puts "The students of Villains Academy"
-    puts "--------------"
+    print_header
     hash_co = @students.group_by { |entry| entry[@cohort] }
     hash_co.each do |key, value|
       puts "#{key.capitalize} cohort"
@@ -113,10 +109,8 @@ def print_students_list
 end
 
 def print_footer
-  if @students.count > 0
-    puts "Overall, we have #{@students.count} great #{student_s}"
-  end
+    puts "Overall, we have #{@students.count} great #{student_s}" if @students.count > 0
 end
 
-try_load_students
+load_students_at_launch
 interactive_menu
