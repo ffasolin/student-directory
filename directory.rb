@@ -1,4 +1,6 @@
 @students = []
+@name = :name
+@cohort = :cohort
 
 def print_menu
   puts "1. Input the students"
@@ -8,11 +10,20 @@ def print_menu
   puts "9. Exit"
 end
 
+def add_to_students_array(name, cohort)
+  @students << {@name => name, @cohort => cohort.to_sym}
+end
+
+def student_s
+  return "student" if @students.count == 1
+  "students"
+end
+
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
-    @students << {name: name, cohort: cohort.to_sym}
+    add_to_students_array(name, cohort)
   end
   file.close
 end
@@ -20,7 +31,7 @@ end
 def try_load_students
   filename = ARGV.first
   return if filename.nil?
-  if File.exists?(filename)
+  if File.exist?(filename)
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
   else
@@ -61,7 +72,7 @@ end
 def save_students
   file = File.open("students.csv", "w")
   @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
+    student_data = [student[@name], student[@cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
@@ -72,19 +83,18 @@ def input_students(students = [])
   puts "Please enter the name of the student"
   puts "To finish, just hit return twice"
   tbc = "TBC"
-  name = STDIN.gets.chop
+  name = STDIN.gets.chomp
   name = tbc if name.empty?
   puts "Please enter the student's cohort"
-  cohort = STDIN.gets.chop
+  cohort = STDIN.gets.chomp
   cohort = tbc if cohort.empty?
   months = %w(january february march april may june july august september october november december tbc)
   while !months.include? cohort.downcase
     puts "You misspelled the cohort, please type it again"
-    cohort = STDIN.gets.chop
+    cohort = STDIN.gets.chomp
   end
-  @students << {name: name, cohort: cohort.to_sym} if name != tbc || cohort != tbc
-  puts "Now we have #{students.count} students" if @students.count != 1
-  puts "Now we have #{students.count} student" if @students.count == 1
+  add_to_students_array(name, cohort) if name != tbc || cohort != tbc
+  puts "Now we have #{@students.count} #{student_s}"
   input_students(@students) unless name == tbc && cohort == tbc
 end
 
@@ -92,11 +102,11 @@ def print_students_list
   if @students.count > 0
     puts "The students of Villains Academy"
     puts "--------------"
-    hash_co = @students.group_by { |entry| entry[:cohort] }
+    hash_co = @students.group_by { |entry| entry[@cohort] }
     hash_co.each do |key, value|
       puts "#{key.capitalize} cohort"
       for i in 0..value.length-1 do
-        puts "#{i+1}. #{value[i][:name]}"
+        puts "#{i+1}. #{value[i][@name]}"
       end
     end
   end
@@ -104,8 +114,7 @@ end
 
 def print_footer
   if @students.count > 0
-    puts "Overall, we have #{@students.count} great students" if @students.count != 1
-    puts "Overall, we have #{@students.count} great student" if @students.count == 1
+    puts "Overall, we have #{@students.count} great #{student_s}"
   end
 end
 
